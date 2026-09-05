@@ -1,5 +1,5 @@
-flask==3.0.3
+flask==3.1.3
 # Pinned to an old, known-vulnerable version deliberately, to demonstrate
 # software composition analysis (SCA) catching vulnerable dependencies
 # (e.g. Trivy/pip-audit will flag CVEs against this version in CI).
-#Flask==3.0.3 secure #flask==2.0.1 insecure
+#Flask==3.1.3 secure #flask==2.0.1 insecure
