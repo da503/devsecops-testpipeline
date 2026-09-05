@@ -1,0 +1,7 @@
+# OWASP ZAP baseline scan rule overrides
+# Format: <rule id>	<action: IGNORE|WARN|FAIL>	<url regex (optional)>
+#
+# Example: downgrade a low-value informational rule to WARN instead of failing
+# the whole pipeline on it, while keeping high-signal rules at FAIL (default).
+10096	WARN	# Timestamp disclosure - noisy, low severity, worth tracking not blocking
+10109	WARN	# Modern Web Application - informational only
