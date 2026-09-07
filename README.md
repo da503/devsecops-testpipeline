@@ -67,7 +67,7 @@ We pace it in this way so that the faster and arguably more sensitive areas are 
 ##Container Hardening best practice
 -Edited the docker file to add in a dedicated Non-root user which I committed from "container hardening" so that it would no longer run as root
 -Pinned the Dockerfile's base image from a floating tag i.e. the Python version, to an exact content digest that checks a hash value
+-Further fixes would require bumping the python up so that the issues the pipeline are picking up are patched to stop it erroring out
 
-#Conclusion/Summary type beat
 A pull request can't reach a live deployment unless it goes through the afformentioned categories, with failures in the deployment(where the scans have yielded something) block until a fix is completed
 ---
