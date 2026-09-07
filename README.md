@@ -64,6 +64,10 @@ Five vulnerabilities in a Flask web app, to make it lighter to work with. Rockin
 -DAST - OWASP ZAP- Instead of reading , we run it in a temp container and attack live, only on pull requests as it's feedbacks a lot more and slower to do
 We pace it in this way so that the faster and arguably more sensitive areas are ran first i.e. secret scans block everything and DAST relying on a working container to attack so has dependancy on a tool like Trivy
 
+##Container Hardening best practice
+-Edited the docker file to add in a dedicated Non-root user which I committed from "container hardening" so that it would no longer run as root
+-Pinned the Dockerfile's base image from a floating tag i.e. the Python version, to an exact content digest that checks a hash value
+
 #Conclusion/Summary type beat
 A pull request can't reach a live deployment unless it goes through the afformentioned categories, with failures in the deployment(where the scans have yielded something) block until a fix is completed
 ---
