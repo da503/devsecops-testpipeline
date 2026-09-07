@@ -3,7 +3,7 @@
 A portfolio project: a small deliberately-vulnerable Flask app, paired with a
 GitHub Actions pipeline that gates merges and deploys on five categories of
 automated security testing.
-
+## AI Notes
 ## Pipeline stages (in order)
 
 1. **Secrets scan** (Gitleaks) — runs first, blocks everything downstream on
@@ -31,20 +31,39 @@ mode left on) plus a deliberately outdated Flask pin and base image — enough
 for every stage of the pipeline to have something real to catch, without
 needing a large or realistic codebase.
 
-## What I'd do next
+## AI Next Steps
 
 - Add a **policy-as-code** gate (OPA/Conftest or Checkov) once IaC is
   introduced for deployment — currently this pipeline secures the
-  application and container, not infrastructure provisioning.
+  application and container, not infrastructure provisioning. -- IAC Project completed
 - Wire Dependabot/Renovate in alongside pip-audit so vulnerable dependencies
   get flagged continuously, not just at PR time.
 - Add a **break-glass override** path (documented, logged, time-bounded) for
   the rare case a gate needs to be bypassed under incident pressure — right
   now every gate is hard-blocking with no escape hatch, which is fine for a
   demo but not realistic for a live pipeline under on-call pressure.
+  
+## Fox Notes
 
+## The problem we're solving
+Before code gets merged into the main version of a project we want to catch security problems before they hit live or having a (over)reliance on manual checks. Essentially have put together a quick pipeline to complete this
+
+## Target involved
+Five vulnerabilities in a Flask web app, to make it lighter to work with. Rocking five vulnerabilities:
+-SQL injection in one endpoint
+-Command injection in another
+-Hardcoded fake API key sitting in the code
+-Unsafe deserialization function- fun one for RCE's
+-Debug mode left on
+
+## Five Stages
+-Gitleaks for secrets scan, looking for creds and passwords in the code itself, we start this off first as no point in doing checks if someones creds are in code
+-SAST with Semgrep- Reading the source code without running it, looking for dangerous patters like unsanitised shell commands.
+-SCA*Software Composition Analysis with pip-audit - We on dependency watch with this one checking libraries and published CVEs. Cache poisoning CVE and outdated Flask version
+-Container Scan with Trivy - Once in a Docker container we scan the container image, involving OS package and app dependencies, SBOM created so we can see a list of everything running inside the container
+-DAST - OWASP ZAP- Instead of reading , we run it in a temp container and attack live, only on pull requests as it's feedbacks a lot more and slower to do
+We pace it in this way so that the faster and arguably more sensitive areas are ran first i.e. secret scans block everything and DAST relying on a working container to attack so has dependancy on a tool like Trivy
+
+#Conclusion/Summary type beat
+A pull request can't reach a live deployment unless it goes through the afformentioned categories, with failures in the deployment(where the scans have yielded something) block until a fix is completed
 ---
-*Portfolio/preparation project. The app is intentionally vulnerable and
-should never be deployed outside a local scan target. Pipeline is
-structurally correct and runnable in a real GitHub repo with the relevant
-Actions secrets configured.*
